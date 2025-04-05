@@ -1,0 +1,6 @@
+[submodule "xp_pgrs_unofficial_guide"]
+	path = xp_pgrs_unofficial_guide
+	url = https://github.com/xp-pgrs-unofficial-guide/xp_pgrs_unofficial_guide.git
+[submodule "xp_pgrs_unofficial_guide_EN"]
+	path = xp_pgrs_unofficial_guide_EN
+	url = https://github.com/xp-pgrs-unofficial-guide/xp_pgrs_unofficial_guide_EN.git
