@@ -12,18 +12,6 @@
           "query": ""
         },
         {
-          "name": "商品列表",
-          "pathName": "pages/goods-list/index",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "云开发示例",
-          "pathName": "pages/examples/index",
-          "query": "",
-          "scene": null
-        },
-        {
           "name": "个人中心",
           "pathName": "pages/user-center/index",
           "query": "",

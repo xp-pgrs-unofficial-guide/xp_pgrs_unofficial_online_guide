@@ -60,8 +60,8 @@ page {
 
 .seperator {
   border-top: 2rpx solid #dcdcdc;
-  margin-top: 20rpx;
-  margin-bottom: 20rpx;
+  margin-top: 60rpx;
+  margin-bottom: 60rpx;
 }
 
 .ability_container {
@@ -132,7 +132,7 @@ page {
   color: #fff;
   height: 40rpx;
   line-height: 40rpx;
-  width: 130rpx;
+  width: 70rpx;
   text-align: center;
 }
 
