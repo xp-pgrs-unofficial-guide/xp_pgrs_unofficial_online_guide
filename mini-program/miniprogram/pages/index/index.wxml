@@ -2,6 +2,51 @@
 <view class="container">
   <view class="main">
     <view class="title font_title_1">博士生非官方手册</view>
+    
+    <!-- 折叠式顶部导航 -->
+    <view class="folding-nav {{ isNavCollapsed ? 'collapsed' : '' }}">
+      <!-- 一级导航 (章节) -->
+      <scroll-view 
+        scroll-x="true" 
+        class="primary-nav"
+        scroll-into-view="{{primaryNavScrollId}}"
+        scroll-with-animation="true"
+      >
+        <view 
+          wx:for="{{ chapters }}" 
+          wx:key="id"
+          id="chapter_{{item.id}}"
+          class="primary-nav-item {{ currentChapter.id === item.id ? 'active' : '' }}"
+          data-chapter-id="{{ item.id }}"
+          bindtap="selectChapter"
+        >
+          {{ currentLang === 'zh' ? item.title : item.title_en }}
+          <view class="indicator" wx:if="{{ currentChapter.id === item.id }}"></view>
+        </view>
+      </scroll-view>
+      
+      <!-- 二级导航 (小节) -->
+      <view class="secondary-nav {{ isSecondaryNavVisible ? 'visible' : 'hidden' }}">
+        <scroll-view 
+          scroll-x="true" 
+          class="secondary-nav-scroll"
+          scroll-into-view="{{secondaryNavScrollId}}"
+          scroll-with-animation="true"
+        >
+          <view 
+            wx:for="{{ currentChapter.sections }}" 
+            wx:key="id"
+            id="section_{{item.id}}"
+            class="secondary-nav-item {{ currentSection.id === item.id ? 'active' : '' }}"
+            data-section-id="{{ item.id }}"
+            bindtap="selectSection"
+          >
+            {{ currentLang === 'zh' ? item.title : item.title_en }}
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    
     <view class="seperator" />
     <view class="step_container" wx:for="{{ chapters }}" wx:key="id" wx:for-item="chapter">
       <view id="step_{{ chapter.id }}" data-step="{{ chapter.id }}" class="step_title">
@@ -9,14 +54,24 @@
           <view class="step_id_mark">Chapter</view>
           <view class="step_id_content">{{ chapter.id }}</view>
         </view>
-        <view class="font_title_2">{{ chapter.title }}</view>
+        <view class="font_title_2">{{ currentLang === 'zh' ? chapter.title : chapter.title_en }}</view>
       </view>
       <view class="step_content">
-        <block wx:for="{{ chapter.subsections }}" wx:for-item="item" wx:key="index">
-            <rich-text nodes="<p style='line-height: 26px;'>{{ item.content }}</p>" />
+        <block wx:for="{{ chapter.sections }}" wx:for-item="section" wx:key="id">
+          <view id="section_{{ section.id }}" class="section_title font_title_3">
+            {{ currentLang === 'zh' ? section.title : section.title_en }}
+          </view>
+          <block wx:for="{{ section.content }}" wx:for-item="contentItem" wx:key="index">
+            <rich-text nodes="<p style='line-height: 26px;'>{{ contentItem }}</p>" />
+          </block>
         </block>
       </view>
       <view class="seperator" />
     </view>
+  </view>
+  
+  <!-- 语言切换按钮 -->
+  <view class="language-toggle" bindtap="toggleLanguage">
+    <text>{{ currentLang === 'zh' ? 'EN' : '中' }}</text>
   </view>
 </view>

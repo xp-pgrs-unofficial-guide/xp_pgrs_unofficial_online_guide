@@ -19,6 +19,76 @@ page {
   font-family: PingFang SC;
 }
 
+/* 章节导航样式 */
+.chapter-nav {
+  position: relative;
+  width: 100%;
+  margin-top: 20rpx;
+  z-index: 100;
+}
+
+.current-chapter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-icon {
+  font-size: 24rpx;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg);
+}
+
+.chapter-menu {
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  border-radius: 8rpx;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  z-index: 101;
+}
+
+.chapter-menu.show {
+  max-height: 600rpx;
+  overflow-y: auto;
+}
+
+.chapter-menu.hide {
+  max-height: 0;
+}
+
+.chapter-menu-item {
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  font-size: 30rpx;
+}
+
+.chapter-menu-item:last-child {
+  border-bottom: none;
+}
+
+.chapter-menu-item.active {
+  color: #07c160;
+  background-color: rgba(7, 193, 96, 0.1);
+}
+
+.chapter-menu-item:active {
+  background-color: #f5f5f5;
+}
+
 .image_container {
   margin-top: 48rpx;
   display: flex;
@@ -223,4 +293,213 @@ page {
 .text_link{
   color: #07c160;
   text-decoration-line: underline;
+}
+
+/* 折叠式顶部导航样式 */
+.folding-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 16rpx 16rpx;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.folding-nav.collapsed {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 一级导航样式 */
+.primary-nav {
+  display: flex;
+  white-space: nowrap;
+  padding: 20rpx 0;
+  background-color: #FFFFFF;
+}
+
+.primary-nav-item {
+  display: inline-block;
+  padding: 20rpx 30rpx;
+  font-size: 32rpx;
+  color: #333333;
+  position: relative;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.primary-nav-item.active {
+  color: #1E3F8F;
+  font-weight: 500;
+}
+
+.primary-nav-item .indicator {
+  position: absolute;
+  bottom: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30rpx;
+  height: 6rpx;
+  background-color: #1E3F8F;
+  border-radius: 3rpx;
+}
+
+/* 二级导航样式 */
+.secondary-nav {
+  background-color: #f5f7fa;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.secondary-nav.visible {
+  max-height: 120rpx;
+  border-top: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+
+.secondary-nav-scroll {
+  display: flex;
+  white-space: nowrap;
+  padding: 20rpx 0;
+}
+
+.secondary-nav-item {
+  display: inline-block;
+  padding: 10rpx 30rpx;
+  font-size: 28rpx;
+  color: #333333;
+  position: relative;
+  border-radius: 30rpx;
+  margin: 0 10rpx;
+  transition: all 0.3s ease;
+}
+
+.secondary-nav-item.active {
+  color: #FFFFFF;
+  background-color: #1E3F8F;
+}
+
+/* 语言切换按钮 */
+.language-toggle {
+  position: fixed;
+  bottom: 100rpx;
+  right: 40rpx;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: #1E3F8F;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+}
+
+/* 章节和小节内容区域样式 */
+.section_title {
+  margin-top: 30rpx;
+  margin-bottom: 20rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.font_title_3 {
+  font-size: 30rpx;
+  font-weight: 500;
+  font-family: "PingFang SC";
+}
+
+/* 保留原有样式 */
+.image_container {
+  margin-top: 48rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  margin-bottom: 20rpx;
+  margin-top: 40rpx;
+}
+
+.sub_title {
+  font-size: 28rpx;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 52rpx;
+}
+
+/* 一级标题字体 */
+.font_title_1 {
+  font-weight: 500;
+  color: #000;
+  font-size: 48rpx;
+}
+
+/* 二级标题字体 */
+.font_title_2 {
+  color: #000;
+  font-size: 32rpx;
+  font-weight: 500;
+  font-family: "PingFang SC";
+}
+
+/* 内容字体 */
+.font_content {
+  font-size: 32rpx;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 52rpx;
+}
+
+.seperator {
+  border-top: 2rpx solid #dcdcdc;
+  margin-top: 60rpx;
+  margin-bottom: 60rpx;
+}
+
+.step_container {
+  margin-top: 30rpx;
+}
+
+.step_title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.step_id_container {
+  display: flex;
+  margin-right: 20rpx;
+}
+
+.step_id_mark {
+  font-size: 20rpx;
+  background-color: #07c160;
+  border-radius: 2px 0px 0px 2px;
+  color: #fff;
+  height: 40rpx;
+  line-height: 40rpx;
+  width: 130rpx;
+  text-align: center;
+}
+
+.step_id_content {
+  width: 50rpx;
+  text-align: center;
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-left: none;
+  box-sizing: border-box;
+  border-radius: 0px 2px 2px 0px;
+}
+
+.step_content {
+  background-color: #fff;
+  color: #666;
+  font-size: 28rpx;
+  word-break: break-all;
 }
