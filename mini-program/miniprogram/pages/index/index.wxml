@@ -1,8 +1,6 @@
 <!--index.wxml-->
 <view class="container">
   <view class="main">
-    <!-- <view class="title font_title_1">博士生非官方手册</view> -->
-    
     <!-- 折叠式顶部导航 -->
     <view class="folding-nav {{ isNavCollapsed ? 'collapsed' : '' }}">
       <!-- 一级导航 (章节) -->
@@ -47,7 +45,7 @@
       </view>
     </view>
     
-    <!-- <view class="seperator" /> -->
+    <!-- 内容区域 -->
     <view class="step_container" wx:for="{{ chapters }}" wx:key="id" wx:for-item="chapter">
       <view id="step_{{ chapter.id }}" data-step="{{ chapter.id }}" class="step_title">
         <view class="step_id_container">
@@ -99,7 +97,7 @@
   </view>
   
   <!-- 语言切换按钮 -->
-  <!-- <view class="language-toggle" bindtap="toggleLanguage">
+  <view class="language-toggle" bindtap="toggleLanguage">
     <text>{{ currentLang === 'zh' ? 'EN' : '中' }}</text>
-  </view> -->
+  </view>
 </view>
