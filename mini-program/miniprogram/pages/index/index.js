@@ -16,7 +16,15 @@ Page({
     observerMap: {},
     activeChapterTitle: '',
     primaryNavScrollId: '', // 一级导航滚动位置ID
-    secondaryNavScrollId: '' // 二级导航滚动位置ID
+    secondaryNavScrollId: '', // 二级导航滚动位置ID
+    
+    // 响应式适配相关数据
+    screenWidth: 0,
+    screenHeight: 0,
+    isLandscape: false,
+    devicePixelRatio: 1,
+    fontSize: 'normal', // 字体大小：small, normal, large
+    screenSizeClass: '', // screen-small, screen-normal, screen-large
   },
 
   /**
@@ -25,6 +33,10 @@ Page({
   onLoad: function() {
     this.initializeDefaultChapter();
     this.loadUserPreferences();
+    
+    // 设备检测和响应式适配
+    this.detectDeviceInfo();
+    this.getSystemFontSize();
     
     // 延迟设置观察器，确保页面元素已渲染
     setTimeout(() => {
@@ -355,5 +367,100 @@ Page({
     Object.values(this.data.observerMap).forEach(observer => {
       if (observer) observer.disconnect();
     });
-  }
+  },
+
+  /**
+   * 监听页面尺寸变化
+   */
+  onResize: function(e) {
+    const { windowWidth, windowHeight } = e.size;
+    const isNewLandscape = windowWidth > windowHeight;
+    
+    this.setData({
+      screenWidth: windowWidth,
+      screenHeight: windowHeight,
+      isLandscape: isNewLandscape
+    });
+    
+    // 调整布局
+    this.adjustLayoutForScreenSize();
+  },
+  
+  /**
+   * 检测设备信息
+   */
+  detectDeviceInfo: function() {
+    try {
+      const systemInfo = wx.getSystemInfoSync();
+      const { windowWidth, windowHeight, pixelRatio } = systemInfo;
+      const isLandscape = windowWidth > windowHeight;
+      
+      // 根据屏幕宽度确定尺寸类别
+      let screenSizeClass = 'screen-normal';
+      if (windowWidth >= 768) {
+        screenSizeClass = 'screen-large';
+      } else if (windowWidth <= 375) {
+        screenSizeClass = 'screen-small';
+      }
+      
+      this.setData({
+        screenWidth: windowWidth,
+        screenHeight: windowHeight,
+        isLandscape: isLandscape,
+        devicePixelRatio: pixelRatio,
+        screenSizeClass: screenSizeClass
+      });
+      
+      this.adjustLayoutForScreenSize();
+    } catch (e) {
+      console.error('获取设备信息失败', e);
+    }
+  },
+  
+  /**
+   * 获取系统字体大小设置
+   */
+  getSystemFontSize: function() {
+    try {
+      wx.getSystemInfoAsync({
+        success: (res) => {
+          // 微信提供fontSizeSetting，表示用户设置的字体大小
+          const fontSizeSetting = res.fontSizeSetting || 16;
+          let fontSize = 'normal';
+          
+          if (fontSizeSetting <= 15) {
+            fontSize = 'small';
+          } else if (fontSizeSetting >= 18) {
+            fontSize = 'large';
+          }
+          
+          this.setData({ fontSize });
+        }
+      });
+    } catch (e) {
+      console.error('获取系统字体大小失败', e);
+    }
+  },
+  
+  /**
+   * 根据屏幕尺寸调整布局
+   */
+  adjustLayoutForScreenSize: function() {
+    const { isLandscape, screenWidth, screenSizeClass } = this.data;
+    
+    // 为小屏幕调整导航栏
+    if (screenSizeClass === 'screen-small') {
+      this.setData({ 
+        isSecondaryNavVisible: false,
+        isNavCollapsed: true 
+      });
+    } 
+    // 为横屏调整导航栏布局
+    else if (isLandscape) {
+      this.setData({
+        isSecondaryNavVisible: true,
+        isNavCollapsed: false
+      });
+    }
+  },
 });
