@@ -270,6 +270,50 @@ Page({
     }
   },
 
+  // 复制代码功能
+  copyCode(e) {
+    const code = e.target?.dataset?.code || '';
+    wx.setClipboardData({
+      data: code,
+      success: () => {
+        wx.showToast({
+          title: '已复制',
+        })
+      },
+      fail: (err) => {
+        console.error('复制失败-----', err);
+      }
+    });
+  },
+  
+  // 处理链接点击
+  handleLinkTap(e) {
+    const linkType = e.currentTarget?.dataset?.linkType || 'default';
+    
+    switch(linkType) {
+      case 'website':
+        // 打开网页（小程序内置浏览器）
+        wx.navigateTo({
+          url: `/pages/web-view/index?url=${encodeURIComponent(e.currentTarget.dataset.url)}`
+        });
+        break;
+      case 'page':
+        // 跳转到小程序内部页面
+        wx.navigateTo({
+          url: e.currentTarget.dataset.url
+        });
+        break;
+      case 'contact':
+        // 复制联系方式
+        this.copyCode({target: {dataset: {code: e.currentTarget.dataset.contact}}});
+        break;
+      default:
+        // 默认行为，可以根据实际需求调整
+        console.log('链接点击：', e.currentTarget.dataset);
+        break;
+    }
+  },
+
   // 页面卸载时清理观察器
   onUnload: function() {
     for (const key in this.data.observerMap) {

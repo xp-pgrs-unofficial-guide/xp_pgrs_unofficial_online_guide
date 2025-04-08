@@ -2,59 +2,6 @@ function highlightText(content) {
   return `<span> \`${content}\` </span>`;
 }
 
-const Chapters = [
-  {
-    id: '1',
-    title: '创建列表页面并初始化数据',
-    subsections: [
-      {
-        type: 'text',
-        content: `编辑教程内置的页面${highlightText('miniprogram/pages/goods-list/index.js')}，在${highlightText('Page')}的${highlightText('data')}配置项中添加初始化数据${highlightText('goodsList')}，代码如下所示。该页面将用于展示商品列表。`,
-      }
-    ],
-  },
-  {
-    id: '2',
-    title: '实现并部署一个后台接口',
-    subsections: [
-      {
-        type: 'text',
-        content: `编辑教程内置的后台接口文件${highlightText('cloudfunctions/quickstartFunctions/fetchGoodsList/index.js')}，使用下面代码覆盖文件内容，返回一些模拟的商品列表数据。`,
-      }
-    ],
-  },
-  {
-    id: '3',
-    title: '小程序端调用后台接口',
-    subsections: [
-      {
-        type: 'text',
-        content: `编辑列表页${highlightText('miniprogram/pages/goods-list/index.js')}，在 Page 下新增一个方法${highlightText('fetchGoodsList')}，用于调用后端接口，并在 Page 的${highlightText('onLoad')}生命周期调用该方法：`,
-      }
-    ],
-  },
-  {
-    id: '4',
-    title: '从数据库中读取真实数据',
-    subsections: [
-      {
-        type: 'text',
-        content: '前面步骤中，后台接口返回的是模拟数据，实际开发中，我们需要利用数据库实现持久存储，下面我们来通过云开发数据库能力实现这个效果。',
-      }
-    ],
-  },
-  {
-    id: '5',
-    title: '调用开放接口生成小程序码',
-    subsections: [
-      {
-        type: 'text',
-        content: '实际小程序开发中，我们通常会对小程序进行传播分享。下面我们利用免鉴权的云调用能力实现小程序码。',
-      }
-    ],
-  },
-];
-
 // 导航数据结构
 const NavigationData = {
   "chapters": [
@@ -68,27 +15,49 @@ const NavigationData = {
           "id": "1_1",
           "title": "申请流程",
           "title_en": "Application Process",
-          "content": [
-            "这里是申请流程的内容描述。包括申请西浦博士项目需要的材料、时间线和注意事项等。",
-            "更多申请流程的详细介绍..."
+          "contents": [
+            {
+              "type": "text",
+              "content": "这里是申请流程的内容描述。包括申请西浦博士项目需要的材料、时间线和注意事项等。"
+            },
+            {
+              "type": "code",
+              "content": "# 申请流程示例时间线\n1. 提交申请表 - 每年9月至次年3月\n2. 材料审核 - 2-4周\n3. 面试安排 - 材料通过后1-2周\n4. 录取结果 - 面试后2-4周\n5. 接受offer - 1-2周内"
+            },
+            {
+              "type": "image",
+              "content": "function_deploy.png"
+            },
+            {
+              "type": "text-link",
+              "content": ["更多信息请查看", "西浦官网", "获取最新申请指南。"]
+            }
           ]
         },
         {
           "id": "1_2",
           "title": "签证办理",
           "title_en": "Visa Application",
-          "content": [
-            "这里是签证办理的内容描述。包括中国签证类型、申请材料和流程等信息。",
-            "更多签证办理的详细介绍..."
+          "contents": [
+            {
+              "type": "text",
+              "content": "这里是签证办理的内容描述。包括中国签证类型、申请材料和流程等信息。"
+            },
+            {
+              "type": "image",
+              "content": "function_deploy.png"
+            }
           ]
         },
         {
           "id": "1_3",
           "title": "住宿准备",
           "title_en": "Accommodation",
-          "content": [
-            "这里是住宿准备的内容描述。包括校内外住宿选择、申请流程和注意事项等。",
-            "更多住宿准备的详细介绍..."
+          "contents": [
+            {
+              "type": "text",
+              "content": "这里是住宿准备的内容描述。包括校内外住宿选择、申请流程和注意事项等。"
+            }
           ]
         }
       ]
@@ -103,18 +72,26 @@ const NavigationData = {
           "id": "2_1",
           "title": "图书馆使用",
           "title_en": "Library Usage",
-          "content": [
-            "这里是图书馆使用的内容描述。包括图书馆开放时间、借阅规则和电子资源访问等信息。",
-            "更多图书馆使用的详细介绍..."
+          "contents": [
+            {
+              "type": "text",
+              "content": "这里是图书馆使用的内容描述。包括图书馆开放时间、借阅规则和电子资源访问等信息。"
+            },
+            {
+              "type": "code",
+              "content": "# 图书馆开放时间\n周一至周五: 8:00-22:00\n周六至周日: 10:00-18:00\n考试期间: 8:00-24:00"
+            }
           ]
         },
         {
           "id": "2_2",
           "title": "研究工具",
           "title_en": "Research Tools",
-          "content": [
-            "这里是研究工具的内容描述。包括常用的学术数据库、文献管理软件和数据分析工具等。",
-            "更多研究工具的详细介绍..."
+          "contents": [
+            {
+              "type": "text",
+              "content": "这里是研究工具的内容描述。包括常用的学术数据库、文献管理软件和数据分析工具等。"
+            }
           ]
         }
       ]
@@ -220,6 +197,5 @@ const NavigationData = {
 
 // 导出常量
 module.exports = {
-  Chapters,
   NavigationData
 };
