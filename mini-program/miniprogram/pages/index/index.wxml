@@ -65,33 +65,43 @@
             
             <!-- 内容渲染，支持多种内容类型 -->
             <view wx:if="{{ section.contents }}">
-              <block wx:for="{{ section.contents }}" wx:for-item="item" wx:key="index">
+              <block wx:for="{{ section.contents }}" wx:for-item="contentItem" wx:key="index">
                 <!-- 文本内容 -->
-                <view wx:if="{{ item.type === 'text' }}" class="text_zone">
-                  <rich-text nodes="<p style='line-height: 1.6;'>{{ item.content }}</p>" />
+                <view wx:if="{{ contentItem.type === 'text' }}" class="text_zone">
+                  <rich-text nodes="<p style='line-height: 1.6;'>{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}</p>" />
                 </view>
                 
                 <!-- 代码块内容 -->
-                <view wx:elif="{{ item.type === 'code' }}" class="code_zone">
-                  <image class="btn-copy" data-code="{{ item.content }}" bind:tap="copyCode" src="../../images/icons/copy.png" />
-                  <rich-text nodes="<pre style='overflow: scroll;'>{{ item.content }}</pre>" />
+                <view wx:elif="{{ contentItem.type === 'code' }}" class="code_zone">
+                  <image class="btn-copy" data-code="{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}" bind:tap="copyCode" src="../../images/icons/copy.png" />
+                  <rich-text nodes="<pre style='overflow: scroll;'>{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}</pre>" />
                 </view>
                 
                 <!-- 图片内容 -->
-                <view wx:elif="{{ item.type === 'image' }}" class="image_zone">
-                  <image src="../../images/{{ item.content }}" mode="{{ isLandscape ? 'aspectFit' : 'widthFix' }}" />
+                <view wx:elif="{{ contentItem.type === 'image' }}" class="image_zone">
+                  <image src="../../images/{{ contentItem.content }}" mode="{{ isLandscape ? 'aspectFit' : 'widthFix' }}" />
                 </view>
                 
                 <!-- 带链接的文本内容 -->
-                <view wx:elif="{{ item.type === 'text-link' }}" class="text_zone">
-                  <view>{{item.content[0]}}<text class="text_link" bind:tap="handleLinkTap" data-link-type="{{item.linkType || 'default'}}">{{item.content[1]}}</text>{{item.content[2]}}</view>
+                <view wx:elif="{{ contentItem.type === 'text-link' }}" class="text_zone">
+                  <view wx:if="{{ currentLang === 'zh' }}">
+                    {{contentItem.content[0]}}<text class="text_link" bind:tap="handleLinkTap" data-link-type="{{contentItem.linkType || 'default'}}">{{contentItem.content[1]}}</text>{{contentItem.content[2]}}
+                  </view>
+                  <view wx:else>
+                    {{contentItem.content_en[0]}}<text class="text_link" bind:tap="handleLinkTap" data-link-type="{{contentItem.linkType || 'default'}}">{{contentItem.content_en[1]}}</text>{{contentItem.content_en[2]}}
+                  </view>
                 </view>
               </block>
             </view>
             
             <!-- 兼容性处理：对于旧格式的内容（纯文本数组）使用默认渲染 -->
             <block wx:if="{{ section.content }}">
-              <rich-text wx:for="{{ section.content }}" wx:key="index" nodes="<p style='line-height: 1.6;'>{{ item }}</p>" />
+              <block wx:if="{{ currentLang === 'zh' }}">
+                <rich-text wx:for="{{ section.content }}" wx:key="index" nodes="<p style='line-height: 1.6;'>{{ item }}</p>" />
+              </block>
+              <block wx:else>
+                <rich-text wx:for="{{ section.content_en }}" wx:key="index" nodes="<p style='line-height: 1.6;'>{{ item }}</p>" />
+              </block>
             </block>
           </block>
         </view>

@@ -18,6 +18,9 @@ Page({
     primaryNavScrollId: '', // 一级导航滚动位置ID
     secondaryNavScrollId: '', // 二级导航滚动位置ID
     
+    // 内容展示相关
+    contentLanguageKey: 'content', // 当前显示内容的语言键值
+    
     // 响应式适配相关数据
     screenWidth: 0,
     screenHeight: 0,
@@ -37,6 +40,11 @@ Page({
     // 设备检测和响应式适配
     this.detectDeviceInfo();
     this.getSystemFontSize();
+    
+    // 设置默认的内容语言键值
+    this.setData({
+      contentLanguageKey: this.data.currentLang === 'zh' ? 'content' : 'content_en'
+    });
     
     // 延迟设置观察器，确保页面元素已渲染
     setTimeout(() => {
@@ -71,6 +79,7 @@ Page({
       if (savedLang) {
         this.setData({ 
           currentLang: savedLang,
+          contentLanguageKey: savedLang === 'zh' ? 'content' : 'content_en',
           activeChapterTitle: this.data.currentChapter ? 
             (savedLang === 'zh' ? this.data.currentChapter.title : this.data.currentChapter.title_en) : ''
         });
@@ -270,6 +279,7 @@ Page({
    */
   toggleLanguage: function() {
     const newLang = this.data.currentLang === 'zh' ? 'en' : 'zh';
+    const newContentKey = newLang === 'zh' ? 'content' : 'content_en';
     
     // 更新当前语言和标题显示
     if (this.data.currentChapter) {
@@ -279,10 +289,14 @@ Page({
       
       this.setData({
         currentLang: newLang,
+        contentLanguageKey: newContentKey,
         activeChapterTitle: title
       });
     } else {
-      this.setData({ currentLang: newLang });
+      this.setData({ 
+        currentLang: newLang,
+        contentLanguageKey: newContentKey
+      });
     }
     
     // 保存语言设置
@@ -291,8 +305,108 @@ Page({
     } catch (e) {
       console.error('保存语言设置失败', e);
     }
+    
+    // 刷新页面内容，如果有自定义组件需要重新渲染
+    this.refreshPageContent();
+  },
+  
+  /**
+   * 刷新页面内容
+   */
+  refreshPageContent: function() {
+    // 触发页面更新以反映新的语言选择
+    // 如果有使用到组件，可能需要通过setData传递新的数据给组件
+    if (this.data.currentChapter) {
+      // 重新设置当前章节，触发视图更新
+      this.setData({
+        currentChapter: { ...this.data.currentChapter }
+      });
+    }
+    
+    // 如果有特定需要更新的DOM元素，可以在这里进行操作
+    // 例如，更新富文本内容或特殊格式的文本
+  },
+  
+  /**
+   * 获取当前语言下的内容
+   * 用于在模板中动态获取对应语言的内容
+   */
+  getLocalizedContent: function(contentObj) {
+    if (!contentObj) return '';
+    
+    // 如果是带有多语言支持的对象
+    if (typeof contentObj === 'object' && !Array.isArray(contentObj)) {
+      // 如果有对应语言的版本，则返回该版本
+      if (this.data.currentLang === 'en' && 'content_en' in contentObj) {
+        return contentObj.content_en;
+      }
+      // 如果没有对应语言的版本，但有默认版本(中文)，则返回默认版本
+      if ('content' in contentObj) {
+        return contentObj.content;
+      }
+    }
+    
+    // 如果是字符串或数组，直接返回
+    return contentObj;
+  },
+  
+  /**
+   * 渲染内容块
+   * 根据内容类型和当前语言选择适当的渲染方式
+   */
+  renderContentBlock: function(contentBlock) {
+    // 确保内容块存在
+    if (!contentBlock) return '';
+    
+    // 获取当前语言的内容键
+    const contentKey = this.data.currentLang === 'zh' ? 'content' : 'content_en';
+    
+    // 如果是数组（如text-link类型）
+    if (Array.isArray(contentBlock)) {
+      // 检查是否有对应语言的数组版本
+      if (this.data.currentLang === 'en' && contentBlock[contentKey]) {
+        return contentBlock[contentKey].join(' ');
+      }
+      return contentBlock.join(' ');
+    }
+    
+    // 如果是对象（如text、code类型）
+    if (typeof contentBlock === 'object') {
+      // 根据内容类型和当前语言选择内容
+      if (this.data.currentLang === 'en' && contentBlock[contentKey]) {
+        return contentBlock[contentKey];
+      }
+      return contentBlock.content || contentBlock;
+    }
+    
+    // 如果是简单字符串，直接返回
+    return contentBlock;
   },
 
+  /**
+   * 处理富文本内容
+   */
+  processRichContent: function(content, type) {
+    // 根据内容类型处理
+    switch(type) {
+      case 'code':
+        // 代码块处理
+        return `<pre class="code-block">${content}</pre>`;
+      case 'image':
+        // 图片处理
+        return `<image class="content-image" src="${content}" mode="widthFix" />`;
+      case 'text-link':
+        // 带链接的文本处理
+        if (Array.isArray(content) && content.length >= 3) {
+          return `${content[0]} <a class="link">${content[1]}</a> ${content[2]}`;
+        }
+        return content.join(' ');
+      default:
+        // 默认文本处理
+        return content;
+    }
+  },
+  
   /**
    * 切换导航栏显示/隐藏
    */
