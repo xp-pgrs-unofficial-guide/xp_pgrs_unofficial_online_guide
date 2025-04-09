@@ -28,7 +28,7 @@ const NavigationData = {
             },
             {
               "type": "image",
-              "content": "icons/home.png"
+              "content": "single_template.png"
             },
             {
               "type": "text-link",
@@ -49,7 +49,7 @@ const NavigationData = {
             },
             {
               "type": "image",
-              "content": "icons/home.png"
+              "content": "single_template.png"
             }
           ]
         },
