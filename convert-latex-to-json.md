@@ -178,10 +178,9 @@ LaTeX 文档中的图片需要特殊处理：
 ## 下一步行动计划
 
 1. 开发 LaTeX 解析脚本 `convert_latex_to_json.py`
-2. 在 LaTeX 文档中添加必要的标记和注释
-3. 设置 GitHub Actions 工作流
-4. 在小程序中实现 JSON 数据获取和缓存机制
-5. 测试整个工作流程
+2. 设置 GitHub Actions 工作流
+3. 在小程序中实现 JSON 数据获取和缓存机制
+4. 测试整个工作流程
 
 ## 示例代码：LaTeX 解析脚本
 
