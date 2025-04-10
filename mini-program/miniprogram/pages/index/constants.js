@@ -4,6 +4,127 @@ function highlightText(content) {
 
 // 导航数据结构
 const NavigationData = {
+    "chapters": [
+        {
+            "id": "1",
+            "title": "前言",
+            "sections": [
+                {
+                    "contents": [
+                        {
+                            "type": "text",
+                            "content": "我之前跟一些博士生同学交流的时候，他们有的都快毕业了，有的都不知道可以去领办公用品，还有的甚至学校体育馆在哪里都不清楚，更别说免费的健身房、球场资源。以及在博士生微信群里，每年都有人到了第一次 APR 的时间才知道还有 meeting record需要填。再以及，利物浦账号下的大量数字资源，了解的人就更少了。有些重要的事，自己不知道，导师不知道，办公室同学也不知道，那最后真的就可能等到毕业了才知道。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "这就是发起本攻略项目的目的。虽然说每个同学入学的时候都收到了一本学校发的 PhD Student Handbook，但很遗憾的是，远远不够。一来其中缺少很多内容，例如利物浦 meeting record、利物浦账户福利几乎没介绍；二来由于是全英文，翻了几页干货又不多，估计很多同学像我一样直接就失去了阅读兴趣；三来入学时发了一大堆材料，虽然官方手册有其重要性，但很容易就淹没在那一堆材料里了。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "对我个人而言，入学的时候也是在各位办公室学长的帮助下才获得了很多必要知识。因此我就想到可以克服原手册的弊端，把这些经验记录下来，以泽后人。与我而言，也是为西浦集体做出的微小贡献。也希望受益于本手册同学，能在学习中把自己宝贵的经验记录下来，将帮助传递下去。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "本手册并不想替代 PhD Student Handbook，而只是作为补充以及重点摘录。因此希望看到这本书的同学，有空的时候还是把官方手册从垃圾桶里捡起来，很可能有重要的发现。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "如果想表达你对作者们的感谢，可以到本项目GitHub上点亮一个star（链接：https://github.com/xp-pgrs-unofficial-guide/xp_pgrs_unofficial_guide）。同时，如果你受到了此文档的帮助，也鼓励你花几分钟把你的亲身经验记录下来，把帮助传递下去。如何投稿，请见本文档第 作指南 章。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "最后，本手册完全用爱发电，从未受到任何资助，也没有官方背景。其中可能有谬误和缺漏，敬请原谅，欢迎指正。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "项目发起人：KW，2022年8月18日于MB"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "title": "Start here: 入口级网站和应用",
+            "sections": [
+              {
+                "id": "2-1",
+                "title": "网站",
+                "contents": [
+                  {
+                    "type": "text",
+                    "content": "西浦校内网站导航：https://guide.xjtlu.edu.cn\n个人信息门户ebridge：https://ebridge.xjtlu.edu.cn\n利物浦信息门户Liverpool Life：https://liverpool-life.liverpool.ac.uk"
+                  }
+                ]
+              },
+              {
+                "id": "2-2",
+                "title": "公众号",
+                "contents": [
+                  {
+                    "type": "image",
+                    "content": "author-folder/Kai.Wu/qrcode_XJTLU-China_1.jpg"
+                  },
+                  {
+                    "type": "text",
+                    "content": "学校公众号"
+                  },
+                  {
+                    "type": "image",
+                    "content": "author-folder/Kai.Wu/qrcode_XJTLU_library_1.jpg"
+                  },
+                  {
+                    "type": "text",
+                    "content": "图书馆"
+                  },
+                  {
+                    "type": "image",
+                    "content": "author-folder/Kai.Wu/qrcode_student_service.jpg"
+                  },
+                  {
+                    "type": "text",
+                    "content": "学生服务（一站式）"
+                  },
+                  {
+                    "type": "image",
+                    "content": "author-folder/Kai.Wu/qrcode_IT.jpg"
+                  },
+                  {
+                    "type": "text",
+                    "content": "IT"
+                  },
+                  {
+                    "type": "text",
+                    "content": "另外，各学院可能有公众号，可在微信搜 \"西浦 {学院名}\" \"西交利物浦 {学院名}\""
+                  }
+                ]
+              },
+              {
+                "id": "2-3",
+                "title": "手机APP",
+                "contents": [
+                  {
+                    "type": "text",
+                    "content": "https://guide.xjtlu.edu.cn/How-to-install-the-XJTLU-APP.html"
+                  }
+                ]
+              },
+              {
+                "id": "2-4",
+                "title": "常用资源位置",
+                "contents": [
+                  {
+                    "type": "text",
+                    "content": "西浦PGR Handbook电子版、学校政策、校规：登录ebridge，在中间的PGR Policies, Procedures and Forms里\n利物浦PGR Handbook电子版 https://www.liverpool.ac.uk/student-administration/research-students/pgr-handbook/\n校园地图：见附录 Chapter.。或者微信搜\"西浦地图\"小程序\n校历：ebridge登录后左边 Academic Calendar\n常用电话：见附录 Chapter."
+                  }
+                ]
+              }
+            ]
+          }
+    ]
+};
+
+const NavigationData1 = {
   "chapters": [
     {
       "id": "1",
