@@ -95,7 +95,7 @@ getCloudFileID: function(cloudPath) {
 - `processChapterImages(chapter)`: 处理章节中的图片，包括缓存获取和云存储请求
 - `loadCurrentChapterImages()`: 加载当前章节的所有图片
 - `onImageLoad(e)`: 处理图片加载成功
-- `onImageError(e)`: 处理图片加载失败
+- `onImageError(e)`: 处理图片加载失败，自动处理过期URL问题，在403错误情况下重新获取临时URL
 
 ### 5. 视图层 (index.wxml)
 
@@ -144,6 +144,7 @@ getCloudFileID: function(cloudPath) {
    - 减少等待加载的时间
    - 状态指示器提供清晰反馈
    - 本地备用图片作为降级方案
+   - 自动处理临时URL过期问题，用户无需手动清理缓存
 
 3. **资源效率**：
    - 节省用户流量
@@ -161,6 +162,50 @@ getCloudFileID: function(cloudPath) {
 2. 小程序Storage上限为10MB，需要合理控制缓存大小
 3. 确保云存储中的图片权限设置为可访问
 4. 保留本地图片作为备用方案，提高系统容错性
+5. 即使缓存未过期，临时URL也可能已失效（403错误），现已通过onImageError自动处理
+
+## 自动处理过期URL机制
+
+为解决临时URL过期导致的403错误问题，我们在onImageError函数中实现了自动刷新URL的机制：
+
+```javascript
+onImageError: function(e) {
+  // ...验证数据有效性...
+  
+  const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
+  const content = this.data.chapters[this.data.currentChapterIndex].sections[sectionIndex].contents[index];
+  
+  // 如果是云存储图片则尝试重新获取临时URL
+  if (content && content.type === 'image' && content.cloudPath) {
+    // 标记为加载中状态
+    this.setData({
+      [`${path}.isLoading`]: true,
+      [`${path}.loadError`]: false
+    });
+    
+    // 从云存储重新获取临时URL
+    wx.cloud.getTempFileURL({
+      fileList: [app.getCloudFileID(content.cloudPath)]
+    }).then(res => {
+      if (res.fileList && res.fileList[0] && res.fileList[0].tempFileURL) {
+        // 缓存并更新图片URL
+        app.cacheImageUrl(res.fileList[0].fileID, res.fileList[0].tempFileURL);
+        this.setData({
+          [`${path}.cloudImageUrl`]: res.fileList[0].tempFileURL,
+          [`${path}.isLoading`]: false,
+          [`${path}.loadError`]: false
+        });
+      }
+    });
+  }
+}
+```
+
+此机制的优点：
+- 对用户完全透明，无需手动操作
+- 只刷新出错的图片，节省资源
+- 自动维护本地缓存，确保后续访问顺畅
+- 提供直观的加载状态反馈
 
 ## 未来优化方向
 
@@ -172,4 +217,4 @@ getCloudFileID: function(cloudPath) {
 
 ---
 
-文档更新日期：2023年4月10日
+文档更新日期：2025年4月10日
