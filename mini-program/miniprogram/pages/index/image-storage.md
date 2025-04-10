@@ -42,6 +42,7 @@
    
 2. **按需加载**：
    - 用户选择章节时触发该章节图片加载
+   - 用户滚动到新章节时自动触发该章节图片加载
    - 获取当前章节中所有图片内容
    
 3. **缓存优先策略**：
@@ -96,6 +97,7 @@ getCloudFileID: function(cloudPath) {
 - `loadCurrentChapterImages()`: 加载当前章节的所有图片
 - `onImageLoad(e)`: 处理图片加载成功
 - `onImageError(e)`: 处理图片加载失败，自动处理过期URL问题，在403错误情况下重新获取临时URL
+- `setupChapterObserver(chapter, observerMap)`: 设置章节观察器，当用户滚动到新章节时自动加载该章节图片
 
 ### 5. 视图层 (index.wxml)
 

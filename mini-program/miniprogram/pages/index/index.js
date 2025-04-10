@@ -166,6 +166,7 @@ Page({
       .observe(`#step_${chapter.id}`, (res) => {
         if (res.intersectionRatio > 0) {
           // 章节可见，更新当前章节和标题
+          const previousChapterId = this.data.currentChapter ? this.data.currentChapter.id : null;
           this.setData({
             currentChapter: chapter,
             activeChapterTitle: this.data.currentLang === 'zh' ? chapter.title : chapter.title_en,
@@ -174,6 +175,11 @@ Page({
           
           // 保存阅读位置
           this.saveReadingPosition(chapter.id, this.data.currentSection ? this.data.currentSection.id : null);
+          
+          // 如果章节改变了，加载当前章节的云存储图片
+          if (previousChapterId !== chapter.id) {
+            this.loadCurrentChapterImages();
+          }
         }
       });
     
