@@ -1,4 +1,4 @@
-将提供的 tex 文件中的内容按以下格式拆解成 json 并存储在 chapter.json 中。正文内容只包含 text, image 和 code 三种类型。
+将提供的 tex 文件中的内容按以下格式拆解成 json 并存储在 chapter.json 中。正文内容只包含 text, image 和 code 三种类型。不要编写代码，直接给出 json 格式的内容。
 
 {
     "id": "<start-from-1>",
@@ -14,7 +14,7 @@
                 },
                 {
                     "type": "image",
-                    "cloudPath": "<image-path>"
+                    "cloudPath": "<image-path-start-with-images/author-folder/>"
                 },
                 {
                     "type": "code",
