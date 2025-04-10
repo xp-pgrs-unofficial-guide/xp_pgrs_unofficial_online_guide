@@ -79,7 +79,15 @@
                 
                 <!-- 图片内容 -->
                 <view wx:elif="{{ contentItem.type === 'image' }}" class="image_zone">
-                  <image src="../../images/{{ contentItem.content }}" mode="{{ isLandscape ? 'aspectFit' : 'widthFix' }}" />
+                  <image 
+                    src="{{ contentItem.cloudPath ? contentItem.cloudImageUrl : '../../images/' + contentItem.content }}" 
+                    mode="{{ isLandscape ? 'aspectFit' : 'widthFix' }}"
+                    bind:load="onImageLoad"
+                    bind:error="onImageError"
+                    data-index="{{index}}"
+                    data-section-index="{{sectionIndex}}" />
+                  <view wx:if="{{ contentItem.isLoading }}" class="image-loading">加载中...</view>
+                  <view wx:if="{{ contentItem.loadError }}" class="image-error">图片加载失败</view>
                 </view>
                 
                 <!-- 带链接的文本内容 -->

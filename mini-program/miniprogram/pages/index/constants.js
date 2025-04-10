@@ -63,7 +63,7 @@ const NavigationData = {
                 "contents": [
                   {
                     "type": "image",
-                    "content": "author-folder/Kai.Wu/qrcode_XJTLU-China_1.jpg"
+                    "cloudPath": "images/author-folder/Kai.Wu/qrcode_XJTLU-China_1.jpg"
                   },
                   {
                     "type": "text",
@@ -71,7 +71,7 @@ const NavigationData = {
                   },
                   {
                     "type": "image",
-                    "content": "author-folder/Kai.Wu/qrcode_XJTLU_library_1.jpg"
+                    "cloudPath": "images/author-folder/Kai.Wu/qrcode_XJTLU_library_1.jpg"
                   },
                   {
                     "type": "text",
@@ -79,7 +79,7 @@ const NavigationData = {
                   },
                   {
                     "type": "image",
-                    "content": "author-folder/Kai.Wu/qrcode_student_service.jpg"
+                    "cloudPath": "images/author-folder/Kai.Wu/qrcode_student_service.jpg"
                   },
                   {
                     "type": "text",
@@ -87,7 +87,7 @@ const NavigationData = {
                   },
                   {
                     "type": "image",
-                    "content": "author-folder/Kai.Wu/qrcode_IT.jpg"
+                    "cloudPath": "images/author-folder/Kai.Wu/qrcode_IT.jpg"
                   },
                   {
                     "type": "text",

@@ -1,4 +1,5 @@
 const { NavigationData } = require("./constants");
+const app = getApp(); // 添加 app 实例以访问云文件 ID 辅助方法
 
 Page({
   /**
@@ -50,6 +51,9 @@ Page({
     setTimeout(() => {
       this.setupIntersectionObservers();
     }, 500);
+    
+    // 加载初始章节的云存储图片
+    this.loadCurrentChapterImages();
   },
   
   /**
@@ -249,6 +253,9 @@ Page({
         offsetTop: -80,
         duration: 300
       });
+      
+      // 加载当前章节的云存储图片
+      this.loadCurrentChapterImages();
     }
   },
   
@@ -576,5 +583,138 @@ Page({
         isNavCollapsed: false
       });
     }
+  },
+
+  /**
+   * 处理图片加载成功
+   */
+  onImageLoad: function(e) {
+    const { index, sectionIndex } = e.currentTarget.dataset;
+    // 获取当前章节和部分
+    const chapter = this.data.chapters[this.data.currentChapterIndex];
+    const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
+
+    this.setData({
+      [`${path}.isLoading`]: false,
+      [`${path}.loadError`]: false
+    });
+  },
+
+  /**
+   * 处理图片加载失败
+   */
+  onImageError: function(e) {
+    const { index, sectionIndex } = e.currentTarget.dataset;
+    const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
+
+    this.setData({
+      [`${path}.isLoading`]: false,
+      [`${path}.loadError`]: true
+    });
+  },
+
+  /**
+   * 处理章节数据，为云存储图片获取临时访问链接
+   */
+  processChapterImages: function(chapter) {
+    // 如果已经处理过，直接返回
+    if (chapter._processed) return Promise.resolve(chapter);
+    
+    const fileIDList = [];
+    const imageMap = {};
+    
+    // 收集所有需要处理的云文件路径
+    chapter.sections.forEach((section, sectionIndex) => {
+      if (section.contents) {
+        section.contents.forEach((item, index) => {
+          if (item.type === 'image' && item.cloudPath) {
+            // 使用 app 中的方法获取完整文件 ID
+            const fileID = app.getCloudFileID(item.cloudPath);
+            fileIDList.push(fileID);
+            imageMap[fileID] = { sectionIndex, index };
+          }
+        });
+      }
+    });
+    
+    // 如果没有云存储图片，直接返回
+    if (fileIDList.length === 0) {
+      chapter._processed = true;
+      return Promise.resolve(chapter);
+    }
+    
+    // 批量获取临时文件链接
+    return wx.cloud.getTempFileURL({
+      fileList: fileIDList
+    }).then(res => {
+      res.fileList.forEach(file => {
+        if (file.tempFileURL) {
+          const position = imageMap[file.fileID];
+          if (position) {
+            const { sectionIndex, index } = position;
+            chapter.sections[sectionIndex].contents[index].cloudImageUrl = file.tempFileURL;
+            // 标记加载状态
+            chapter.sections[sectionIndex].contents[index].isLoading = false;
+          }
+        }
+      });
+      
+      chapter._processed = true;
+      return chapter;
+    }).catch(err => {
+      console.error('获取云存储图片临时链接失败', err);
+      
+      // 标记所有图片加载失败
+      fileIDList.forEach(fileID => {
+        const position = imageMap[fileID];
+        if (position) {
+          const { sectionIndex, index } = position;
+          chapter.sections[sectionIndex].contents[index].isLoading = false;
+          chapter.sections[sectionIndex].contents[index].loadError = true;
+        }
+      });
+      
+      return chapter;
+    });
+  },
+
+  /**
+   * 加载当前章节的所有云存储图片
+   */
+  loadCurrentChapterImages: function() {
+    if (!this.data.currentChapter) return;
+    
+    const currentChapterIndex = this.data.chapters.findIndex(c => c.id === this.data.currentChapter.id);
+    if (currentChapterIndex === -1) return;
+    
+    // 记录当前章节索引，用于图片加载回调时定位
+    this.setData({
+      currentChapterIndex: currentChapterIndex
+    });
+    
+    const chapter = this.data.chapters[currentChapterIndex];
+    
+    // 预处理：将所有带有 cloudPath 的图片项标记为加载中
+    chapter.sections.forEach((section, sectionIndex) => {
+      if (section.contents) {
+        section.contents.forEach((item, index) => {
+          if (item.type === 'image' && item.cloudPath) {
+            item.isLoading = true;
+            item.loadError = false;
+          }
+        });
+      }
+    });
+    
+    this.setData({
+      [`chapters[${currentChapterIndex}]`]: chapter
+    });
+    
+    // 处理图片并获取临时URL
+    this.processChapterImages(chapter).then(processedChapter => {
+      this.setData({
+        [`chapters[${currentChapterIndex}]`]: processedChapter
+      });
+    });
   },
 });
