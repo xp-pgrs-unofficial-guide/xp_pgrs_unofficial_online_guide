@@ -628,11 +628,57 @@ Page({
     }
     
     const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
-
-    this.setData({
-      [`${path}.isLoading`]: false,
-      [`${path}.loadError`]: true
-    });
+    const content = this.data.chapters[this.data.currentChapterIndex].sections[sectionIndex].contents[index];
+    
+    // 如果是云存储图片并且可能是因为URL过期导致的失败
+    if (content && content.type === 'image' && content.cloudPath) {
+      console.log('云存储图片加载失败，尝试重新获取URL:', content.cloudPath);
+      
+      // 设置为加载中状态
+      this.setData({
+        [`${path}.isLoading`]: true,
+        [`${path}.loadError`]: false
+      });
+      
+      // 获取完整的fileID
+      const fileID = app.getCloudFileID(content.cloudPath);
+      
+      // 从云存储重新获取临时URL
+      wx.cloud.getTempFileURL({
+        fileList: [fileID]
+      }).then(res => {
+        if (res.fileList && res.fileList[0] && res.fileList[0].tempFileURL) {
+          // 缓存新获取的URL
+          app.cacheImageUrl(fileID, res.fileList[0].tempFileURL);
+          
+          // 更新图片URL
+          console.log('成功刷新图片临时URL:', content.cloudPath);
+          this.setData({
+            [`${path}.cloudImageUrl`]: res.fileList[0].tempFileURL,
+            [`${path}.isLoading`]: false,
+            [`${path}.loadError`]: false
+          });
+        } else {
+          console.error('获取云存储图片临时链接失败：无效的响应', res);
+          this.setData({
+            [`${path}.isLoading`]: false,
+            [`${path}.loadError`]: true
+          });
+        }
+      }).catch(err => {
+        console.error('重新获取图片临时URL失败', err);
+        this.setData({
+          [`${path}.isLoading`]: false,
+          [`${path}.loadError`]: true
+        });
+      });
+    } else {
+      // 非云存储图片，直接标记为加载失败
+      this.setData({
+        [`${path}.isLoading`]: false,
+        [`${path}.loadError`]: true
+      });
+    }
   },
 
   /**
