@@ -590,8 +590,18 @@ Page({
    */
   onImageLoad: function(e) {
     const { index, sectionIndex } = e.currentTarget.dataset;
-    // 获取当前章节和部分
-    const chapter = this.data.chapters[this.data.currentChapterIndex];
+    // Check if required data is available
+    if (typeof this.data.currentChapterIndex === 'undefined' || 
+        typeof sectionIndex === 'undefined' || 
+        typeof index === 'undefined') {
+      console.error('Invalid data in onImageLoad:', {
+        currentChapterIndex: this.data.currentChapterIndex,
+        sectionIndex,
+        index
+      });
+      return; // Exit if data is invalid
+    }
+    
     const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
 
     this.setData({
@@ -605,6 +615,18 @@ Page({
    */
   onImageError: function(e) {
     const { index, sectionIndex } = e.currentTarget.dataset;
+    // Check if required data is available
+    if (typeof this.data.currentChapterIndex === 'undefined' || 
+        typeof sectionIndex === 'undefined' || 
+        typeof index === 'undefined') {
+      console.error('Invalid data in onImageError:', {
+        currentChapterIndex: this.data.currentChapterIndex,
+        sectionIndex,
+        index
+      });
+      return; // Exit if data is invalid
+    }
+    
     const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
 
     this.setData({
