@@ -14,7 +14,7 @@
                 },
                 {
                     "type": "image",
-                    "content": "<image-path>"
+                    "cloudPath": "<image-path>"
                 },
                 {
                     "type": "code",

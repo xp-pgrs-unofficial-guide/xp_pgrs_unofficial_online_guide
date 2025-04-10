@@ -644,6 +644,7 @@ Page({
     
     const fileIDList = [];
     const imageMap = {};
+    const uncachedFileIDs = []; // 存储未缓存的文件ID
     
     // 收集所有需要处理的云文件路径
     chapter.sections.forEach((section, sectionIndex) => {
@@ -665,10 +666,40 @@ Page({
       return Promise.resolve(chapter);
     }
     
-    // 批量获取临时文件链接
+    // 先尝试从缓存获取图片URL
+    const cachedUrls = app.batchGetCachedImageUrls(fileIDList);
+    
+    // 处理缓存中已有的URL
+    Object.keys(cachedUrls).forEach(fileID => {
+      const position = imageMap[fileID];
+      if (position) {
+        const { sectionIndex, index } = position;
+        chapter.sections[sectionIndex].contents[index].cloudImageUrl = cachedUrls[fileID];
+        // 标记加载状态
+        chapter.sections[sectionIndex].contents[index].isLoading = false;
+      }
+    });
+    
+    // 收集未缓存的文件ID
+    fileIDList.forEach(fileID => {
+      if (!cachedUrls[fileID]) {
+        uncachedFileIDs.push(fileID);
+      }
+    });
+    
+    // 如果所有文件都已缓存，直接返回
+    if (uncachedFileIDs.length === 0) {
+      chapter._processed = true;
+      return Promise.resolve(chapter);
+    }
+    
+    // 批量获取未缓存的临时文件链接
     return wx.cloud.getTempFileURL({
-      fileList: fileIDList
+      fileList: uncachedFileIDs
     }).then(res => {
+      // 缓存新获取的URL
+      app.batchCacheImageUrls(res.fileList);
+      
       res.fileList.forEach(file => {
         if (file.tempFileURL) {
           const position = imageMap[file.fileID];
@@ -686,8 +717,8 @@ Page({
     }).catch(err => {
       console.error('获取云存储图片临时链接失败', err);
       
-      // 标记所有图片加载失败
-      fileIDList.forEach(fileID => {
+      // 标记所有未处理的图片加载失败
+      uncachedFileIDs.forEach(fileID => {
         const position = imageMap[fileID];
         if (position) {
           const { sectionIndex, index } = position;
