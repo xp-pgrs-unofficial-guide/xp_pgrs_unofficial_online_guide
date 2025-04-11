@@ -1294,7 +1294,23 @@ const NavigationData = {
                 ]
               }
             ]
-          }
+        },
+        {
+            "id": "9",
+            "title": "致谢",
+            "sections": [
+                {
+                    "id": "9-1",
+                    "title": "致谢",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "content": "• 本手册使用了ElegantBook模板 https://github.com/ElegantLaTeX/ElegantBook\n• Wu 感谢 MB321 的 Chengyu Wang, Francesco Flammini Dotti, Xiuming Xu, Yu Wang（按字母排序）等学长在 PhD 前两年期间的大力帮助，特别是在体育馆设施介绍、拿办公用品、supervisory meeting records、APR方面的帮助。感谢22-AoFE-Tian、2023-InD-Rolf等同学的纠错, 22-ARC-Yang信息补充。感谢其他作者的辛勤付出。\n• Shiyao 感谢 Wu 学长于 2022 年 8 月创立本项目并在两年的时间里编辑了本手册的大量内容。\n• (其他作者，请在这里添加你的致谢信息)"
+                        }
+                    ]
+                }
+            ]
+        }
               
     ]
 };
