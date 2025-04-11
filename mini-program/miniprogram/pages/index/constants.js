@@ -1186,6 +1186,54 @@ const NavigationData = {
                     ]
                 }
             ]
+        },
+        {
+            "id": "7",
+            "title": "写作指南",
+            "sections": [
+                {
+                    "id": "7-1",
+                    "title": "投稿指南",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "content": "你用十几分钟写下的经验，可能会节约下后来人几小时甚至几天的时间。欢迎为本攻略做出贡献。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "最简单粗暴的贡献方式，直接把纯文本、word或者tex文件发给 Shiyao。管理员会帮你把文件转换成LaTeX格式放进攻略。虽然管理员可能没有那么开心，因为要费些时间建文件整理上传，但也是可以的。如果你心疼可怜的管理员，可以看看下面的方法（嫌麻烦的同学可以跳过下面的部分，直接看本页最后一段话）。更好的投稿姿势："
+                        },
+                        {
+                            "type": "text",
+                            "content": "如果你有使用Git和交Pull Request的经验，也会写LaTeX，那么可以直接在本手册的GitHub页面提交PR。如何交PR可参照这个链接"
+                        },
+                        {
+                            "type": "text",
+                            "content": "注意：对于上面高级的投稿方法，为避免多人协作弄乱顺序，请每位作者在author-folder文件夹下建立自己的子目录，在里面新建tex文件写作，第一行直接从section命令开始，其后写正文。写完了过后，在正确的章节里，用以下代码把你的稿件插入到chapter文件夹下的章节里"
+                        },
+                        {
+                            "type": "code",
+                            "content": "\\input{你的tex文件路径}"
+                        },
+                        {
+                            "type": "text",
+                            "content": "例如，王多鱼同学想要分享自己的常用软件。首先在author-folder下建立一个duoyu.wang文件夹，在里面新建health-insurance-use.tex，第一行写\\section{学生医保使用}写标题，后面写正文。写好过后，在chapters文件夹里的others.tex中，添加一行\\input{author-folder/duoyu.wang/health-insurance-use.tex}，就完成了。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "如果要一些高级的编辑方式，可参照项目 GitHub 的author-guide目录下的模板手册和例子。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "属不署名都可以。可以匿名，也可以把姓名邮箱院系入学年份都写上。你如果愿意的话把生辰八字、出生年月、房产车产详情附上也是完全可以的，这样甚至可以问问PGR Society能不能安排相亲（雾）。最后必须要提醒：您不得发布任何违反中华人民共和国法律、西交利物浦大学博士生守则、利物浦大学博士生守则和其他任何适用规定的内容。您需要对你发布的内容负责，PGR Society无法对内容的准确性做担保或审核。由您发布的内容导致的任何纠纷，PGR Society社团和其他作者不承担任何连带责任。"
+                        },
+                        {
+                            "type": "text",
+                            "content": "再次感谢你为学弟学妹们、祖国的花朵们做出的贡献  (ง •̀_•́)ง"
+                        }
+                    ]
+                }
+            ]
         }
               
     ]
