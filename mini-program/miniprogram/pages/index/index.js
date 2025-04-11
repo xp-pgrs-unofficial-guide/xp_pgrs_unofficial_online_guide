@@ -29,6 +29,7 @@ Page({
     devicePixelRatio: 1,
     fontSize: 'normal', // 字体大小：small, normal, large
     screenSizeClass: '', // screen-small, screen-normal, screen-large
+    isPC: false, // 是否为PC端
   },
 
   /**
@@ -519,7 +520,7 @@ Page({
   detectDeviceInfo: function() {
     try {
       const systemInfo = wx.getSystemInfoSync();
-      const { windowWidth, windowHeight, pixelRatio } = systemInfo;
+      const { windowWidth, windowHeight, pixelRatio, platform } = systemInfo;
       const isLandscape = windowWidth > windowHeight;
       
       // 根据屏幕宽度确定尺寸类别
@@ -530,12 +531,16 @@ Page({
         screenSizeClass = 'screen-small';
       }
       
+      // 检测是否在PC端运行
+      const isPC = platform === 'windows' || platform === 'mac' || platform === 'devtools';
+      
       this.setData({
         screenWidth: windowWidth,
         screenHeight: windowHeight,
         isLandscape: isLandscape,
         devicePixelRatio: pixelRatio,
-        screenSizeClass: screenSizeClass
+        screenSizeClass: screenSizeClass,
+        isPC: isPC
       });
       
       this.adjustLayoutForScreenSize();
@@ -573,7 +578,7 @@ Page({
    * 根据屏幕尺寸调整布局
    */
   adjustLayoutForScreenSize: function() {
-    const { isLandscape, screenWidth, screenSizeClass } = this.data;
+    const { isLandscape, screenWidth, screenSizeClass, isPC } = this.data;
     
     // 为小屏幕调整导航栏
     if (screenSizeClass === 'screen-small') {
@@ -582,6 +587,15 @@ Page({
         isNavCollapsed: true 
       });
     } 
+    // 为 PC 端或大屏幕优化布局
+    else if (isPC || screenWidth >= 768) {
+      this.setData({
+        isSecondaryNavVisible: true,
+        isNavCollapsed: false,
+        // 在大屏上始终应用"景观模式"布局
+        isLandscape: true
+      });
+    }
     // 为横屏调整导航栏布局
     else if (isLandscape) {
       this.setData({

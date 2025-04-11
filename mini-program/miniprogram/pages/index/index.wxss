@@ -55,6 +55,7 @@ page {
 /* 屏幕适配样式 - 由 JS 根据屏幕尺寸动态添加 */
 .screen-large .main {
   width: 85%;
+  max-width: 1200rpx; /* 限制最大宽度，提高大屏下的可读性 */
 }
 
 .screen-small .main {
@@ -401,4 +402,94 @@ page {
 /* 响应式布局内容区域调整 */
 .content-area.landscape-mode .step_container {
   padding: var(--medium-spacing);
+}
+
+/* PC 端和大屏适配 */
+@media (min-width: 800px) {
+  .container {
+    padding-bottom: 60rpx;
+  }
+  
+  /* 侧边栏布局 - 将导航固定在左侧 */
+  .container.landscape-mode {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  
+  .landscape-mode .folding-nav {
+    position: fixed;
+    left: 20rpx;
+    top: 20rpx;
+    width: 240rpx;
+    height: calc(100vh - 40rpx);
+    border-radius: 16rpx;
+    overflow-y: auto;
+    box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+  }
+  
+  .landscape-mode .primary-nav, 
+  .landscape-mode .primary-nav-landscape {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    max-height: none;
+  }
+  
+  .landscape-mode .primary-nav-item {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 24rpx 30rpx;
+    border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .landscape-mode .primary-nav-item .indicator {
+    left: 10rpx;
+    bottom: auto;
+    width: 4rpx;
+    height: 40rpx;
+    transform: none;
+  }
+  
+  .landscape-mode .secondary-nav.visible {
+    height: auto;
+    max-height: 300rpx;
+  }
+  
+  .landscape-mode .secondary-nav-scroll,
+  .landscape-mode .secondary-nav-landscape {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .landscape-mode .secondary-nav-item {
+    width: 90%;
+    margin: 6rpx auto;
+    justify-content: flex-start;
+  }
+  
+  .landscape-mode .content-area {
+    margin-left: 260rpx;
+    width: calc(100% - 280rpx);
+  }
+  
+  /* 网格布局 - 适用于章节内容在大屏的展示 */
+  .landscape-mode .step_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400rpx, 1fr));
+    gap: 30rpx;
+  }
+  
+  .landscape-mode .step_title {
+    grid-column: 1 / -1;
+  }
+  
+  /* 调整图片在大屏下的展示 */
+  .landscape-mode .image_zone {
+    text-align: center;
+  }
+  
+  .landscape-mode .image_zone image {
+    max-width: 80%;
+    height: auto;
+  }
 }
