@@ -592,28 +592,80 @@ Page({
   },
 
   /**
+   * 处理图片预览功能
+   */
+  previewImage: function(e) {
+    const { index, sectionIndex } = e.currentTarget.dataset;
+    const section = this.data.currentChapter.sections[sectionIndex];
+    const contentItem = section.contents[index];
+    
+    // 获取当前图片URL
+    const current = contentItem.cloudPath ? contentItem.cloudImageUrl : '../../images/' + contentItem.content;
+    
+    // 收集当前章节所有图片的URL
+    const urls = [];
+    
+    // 遍历当前章节的所有小节
+    this.data.currentChapter.sections.forEach(section => {
+      if (section.contents) {
+        section.contents.forEach(item => {
+          if (item.type === 'image') {
+            const imageUrl = item.cloudPath ? item.cloudImageUrl : '../../images/' + item.content;
+            urls.push(imageUrl);
+          }
+        });
+      }
+    });
+    
+    // 如果没有收集到图片，至少包含当前图片
+    if (urls.length === 0) {
+      urls.push(current);
+    }
+    
+    // 调用微信预览图片API
+    wx.previewImage({
+      current: current, // 当前显示图片的链接
+      urls: urls, // 需要预览的图片链接列表
+      success: () => {
+        console.log('图片预览成功');
+      },
+      fail: (err) => {
+        console.error('图片预览失败', err);
+        wx.showToast({
+          title: '图片预览失败',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  /**
    * 处理图片加载成功
    */
   onImageLoad: function(e) {
     const { index, sectionIndex } = e.currentTarget.dataset;
-    // Check if required data is available
-    if (typeof this.data.currentChapterIndex === 'undefined' || 
-        typeof sectionIndex === 'undefined' || 
-        typeof index === 'undefined') {
-      console.error('Invalid data in onImageLoad:', {
-        currentChapterIndex: this.data.currentChapterIndex,
-        sectionIndex,
-        index
-      });
-      return; // Exit if data is invalid
+    
+    // 直接从当前章节获取数据，不依赖 currentChapterIndex
+    const chapter = this.data.currentChapter;
+    if (!chapter || !chapter.sections || !chapter.sections[sectionIndex] || 
+        !chapter.sections[sectionIndex].contents || !chapter.sections[sectionIndex].contents[index]) {
+      console.error('Invalid data in onImageLoad:', { sectionIndex, index });
+      return;
     }
     
-    const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
-
-    this.setData({
-      [`${path}.isLoading`]: false,
-      [`${path}.loadError`]: false
-    });
+    // 直接更新当前章节的图片加载状态
+    const content = chapter.sections[sectionIndex].contents[index];
+    content.isLoading = false;
+    content.loadError = false;
+    
+    // 如果有 currentChapterIndex，则通过 setData 更新 UI
+    if (typeof this.data.currentChapterIndex !== 'undefined') {
+      const path = `chapters[${this.data.currentChapterIndex}].sections[${sectionIndex}].contents[${index}]`;
+      this.setData({
+        [`${path}.isLoading`]: false,
+        [`${path}.loadError`]: false
+      });
+    }
   },
 
   /**
@@ -799,12 +851,18 @@ Page({
     
     const chapter = this.data.chapters[currentChapterIndex];
     
-    // 预处理：将所有带有 cloudPath 的图片项标记为加载中
+    // 预处理：设置所有图片项的加载状态
     chapter.sections.forEach((section, sectionIndex) => {
       if (section.contents) {
         section.contents.forEach((item, index) => {
-          if (item.type === 'image' && item.cloudPath) {
-            item.isLoading = true;
+          if (item.type === 'image') {
+            // 云存储图片设为加载中
+            if (item.cloudPath) {
+              item.isLoading = true;
+            } else {
+              // 本地图片默认设为已加载
+              item.isLoading = false;
+            }
             item.loadError = false;
           }
         });

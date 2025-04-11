@@ -85,8 +85,9 @@
                     bind:load="onImageLoad"
                     bind:error="onImageError"
                     data-index="{{index}}"
-                    data-section-index="{{sectionIndex}}" />
-                  <view wx:if="{{ contentItem.isLoading }}" class="image-loading">加载中...</view>
+                    data-section-index="{{sectionIndex}}"
+                    bindtap="previewImage" />
+                  <view wx:if="{{ contentItem.isLoading === true }}" class="image-loading">加载中...</view>
                   <view wx:if="{{ contentItem.loadError }}" class="image-error">图片加载失败</view>
                 </view>
                 

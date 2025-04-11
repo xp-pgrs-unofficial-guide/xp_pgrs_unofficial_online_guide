@@ -65,7 +65,7 @@ page {
 /* 顶部导航样式 */
 .folding-nav {
   position: sticky;
-  top: -5rpx;
+  top: 0rpx;
   width: 100%;
   z-index: 100;
   background-color: #fff;
