@@ -1,0 +1,7 @@
+/* 适老化文本组件样式 */
+.elderly-text {
+  line-height: 1.6;
+  word-wrap: break-word;
+  word-break: break-all;
+  display: inline;
+}

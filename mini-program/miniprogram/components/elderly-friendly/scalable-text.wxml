@@ -1,0 +1,4 @@
+<!-- 适老化文本组件，可根据系统字体大小自动调整 -->
+<view class="elderly-text {{className}}" style="font-size: {{scaledFontSize}}rpx; {{customStyle}}">
+  <slot></slot>
+</view>

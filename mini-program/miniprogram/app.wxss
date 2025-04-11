@@ -1,13 +1,21 @@
 /**app.wxss**/
+/* 导入适老化全局样式 */
+@import "./utils/elderly-friendly.wxss";
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
+  /* 增加内边距，提升可读性 */
+  padding: 30rpx 20rpx;
 } 
 
 button {
   background: initial;
+  /* 确保按钮有足够大的触控区域 */
+  min-height: 80rpx;
+  min-width: 80rpx;
 }
 
 button:focus{
@@ -18,10 +26,48 @@ button::after{
   border: none;
 }
 
-
 page {
   background: #f6f6f6;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  /* 设置基础字体大小和行高，提高可读性 */
+  font-size: 32rpx;
+  line-height: 1.6;
+  /* 高对比度文字颜色，提高可读性 */
+  color: #333333;
+}
+
+/* 确保所有交互元素有足够大的触控区域 */
+.navigator, .clickable-item {
+  min-height: 80rpx;
+  min-width: 80rpx;
+  display: flex;
+  align-items: center;
+}
+
+/* 增强表单元素的可访问性 */
+input, textarea, picker {
+  font-size: 32rpx;
+  min-height: 80rpx;
+  border: 2rpx solid #CCCCCC;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+}
+
+/* 增强文本可读性 */
+.text-content {
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+}
+
+/* 高对比度文本 */
+.high-contrast-text {
+  color: #000000;
+}
+
+/* 关怀模式特殊样式 */
+.elderly-care-mode {
+  /* 关怀模式下增强对比度和可读性 */
+  font-weight: 500;
 }

@@ -1,0 +1,64 @@
+/**
+ * 适老化全局样式
+ * 用于定义适老化设计相关的全局样式变量和样式类
+ */
+
+/* 高对比度文本样式 */
+.elderly-high-contrast-text {
+  color: #000000 !important;
+}
+
+/* 高对比度背景样式 */
+.elderly-high-contrast-bg {
+  background-color: #FFFFFF !important;
+}
+
+/* 增大触控区域的通用样式 */
+.elderly-touch-target {
+  min-width: 80rpx;
+  min-height: 80rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 增强文本可读性的行间距 */
+.elderly-readable-text {
+  line-height: 1.6;
+  letter-spacing: 2rpx;
+}
+
+/* 适老化表单元素样式 */
+.elderly-form-item {
+  margin-bottom: 30rpx;
+}
+
+.elderly-input {
+  height: 88rpx;
+  font-size: 32rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #CCCCCC;
+  border-radius: 8rpx;
+}
+
+/* 适老化图标样式 - 确保足够大的点击区域 */
+.elderly-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 80rpx;
+  min-height: 80rpx;
+}
+
+/* 适老化列表项样式 */
+.elderly-list-item {
+  padding: 30rpx 24rpx;
+  border-bottom: 2rpx solid #EEEEEE;
+}
+
+/* 适老化标签栏样式 */
+.elderly-tab {
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  text-align: center;
+}

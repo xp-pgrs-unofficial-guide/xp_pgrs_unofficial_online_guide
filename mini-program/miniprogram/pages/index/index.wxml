@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container {{fontSize ? 'text-' + fontSize : 'text-normal'}} {{isLandscape ? 'landscape-mode' : ''}} {{screenSizeClass}}">
+<view class="container {{fontSize ? 'text-' + fontSize : 'text-normal'}} {{isLandscape ? 'landscape-mode' : ''}} {{screenSizeClass}} {{isElderlyMode ? 'elderly-care-mode' : ''}}">
   <view class="main">
     <!-- 折叠式顶部导航 -->
     <view class="folding-nav {{ isNavCollapsed ? 'collapsed' : '' }} {{ isLandscape ? 'landscape-mode' : '' }}">
@@ -15,9 +15,10 @@
           wx:for="{{ chapters }}" 
           wx:key="id"
           id="chapter_{{item.id}}"
-          class="primary-nav-item {{ currentChapter.id === item.id ? 'active' : '' }}"
+          class="primary-nav-item {{ currentChapter.id === item.id ? 'active' : '' }} elderly-touch-target"
           data-chapter-id="{{ item.id }}"
           bindtap="selectChapter"
+          style="font-size: {{scaledFontSize}}rpx;"
         >
           {{ currentLang === 'zh' ? item.title : item.title_en }}
           <view class="indicator" wx:if="{{ currentChapter.id === item.id }}"></view>
@@ -37,9 +38,10 @@
             wx:for="{{ currentChapter.sections }}" 
             wx:key="id"
             id="section_{{item.id}}"
-            class="secondary-nav-item {{ currentSection.id === item.id ? 'active' : '' }}"
+            class="secondary-nav-item {{ currentSection.id === item.id ? 'active' : '' }} elderly-touch-target"
             data-section-id="{{ item.id }}"
             bindtap="selectSection"
+            style="font-size: {{scaledFontSize}}rpx;"
           >
             {{ currentLang === 'zh' ? item.title : item.title_en }}
           </view>
@@ -55,26 +57,28 @@
             <view class="step_id_mark">Chapter</view>
             <view class="step_id_content">{{ chapter.id }}</view>
           </view>
-          <view class="font_title_2">{{ currentLang === 'zh' ? chapter.title : chapter.title_en }}</view>
+          <scalable-text font-size="{{36}}" class="font_title_2">{{ currentLang === 'zh' ? chapter.title : chapter.title_en }}</scalable-text>
         </view>
-        <view class="step_content">
+        <scalable-card class="step_content">
           <block wx:for="{{ chapter.sections }}" wx:for-item="section" wx:for-index="sectionIndex" wx:key="id">
             <view id="section_{{ section.id }}" class="section_title font_title_3">
-              {{ currentLang === 'zh' ? section.title : section.title_en }}
+              <scalable-text font-size="{{32}}">{{ currentLang === 'zh' ? section.title : section.title_en }}</scalable-text>
             </view>
             
             <!-- 内容渲染，支持多种内容类型 -->
             <view wx:if="{{ section.contents }}">
               <block wx:for="{{ section.contents }}" wx:for-item="contentItem" wx:for-index="index" wx:key="index">
                 <!-- 文本内容 -->
-                <view wx:if="{{ contentItem.type === 'text' }}" class="text_zone">
-                  <rich-text nodes="<p style='line-height: 1.6;'>{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}</p>" />
+                <view wx:if="{{ contentItem.type === 'text' }}" class="text_zone elderly-readable-text">
+                  <rich-text nodes="<p style='line-height: 1.6; font-size: {{scaledBodyFontSize}}px;'>{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}</p>" />
                 </view>
                 
                 <!-- 代码块内容 -->
                 <view wx:elif="{{ contentItem.type === 'code' }}" class="code_zone">
-                  <image class="btn-copy" data-code="{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}" bind:tap="copyCode" src="../../images/icons/copy.png" />
-                  <rich-text nodes="<pre style='overflow: scroll;'>{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}</pre>" />
+                  <view class="elderly-icon">
+                    <image class="btn-copy" data-code="{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}" bind:tap="copyCode" src="../../images/icons/copy.png" />
+                  </view>
+                  <rich-text nodes="<pre style='overflow: scroll; font-size: {{scaledCodeFontSize}}px;'>{{ currentLang === 'zh' ? contentItem.content : contentItem.content_en }}</pre>" />
                 </view>
                 
                 <!-- 图片内容 -->
@@ -87,17 +91,21 @@
                     data-index="{{index}}"
                     data-section-index="{{sectionIndex}}"
                     bindtap="previewImage" />
-                  <view wx:if="{{ contentItem.isLoading === true }}" class="image-loading">加载中...</view>
-                  <view wx:if="{{ contentItem.loadError }}" class="image-error">图片加载失败</view>
+                  <view wx:if="{{ contentItem.isLoading === true }}" class="image-loading">
+                    <scalable-text font-size="{{28}}">加载中...</scalable-text>
+                  </view>
+                  <view wx:if="{{ contentItem.loadError }}" class="image-error">
+                    <scalable-text font-size="{{28}}">图片加载失败</scalable-text>
+                  </view>
                 </view>
                 
                 <!-- 带链接的文本内容 -->
-                <view wx:elif="{{ contentItem.type === 'text-link' }}" class="text_zone">
-                  <view wx:if="{{ currentLang === 'zh' }}">
-                    {{contentItem.content[0]}}<text class="text_link" bind:tap="handleLinkTap" data-link-type="{{contentItem.linkType || 'default'}}">{{contentItem.content[1]}}</text>{{contentItem.content[2]}}
+                <view wx:elif="{{ contentItem.type === 'text-link' }}" class="text_zone elderly-readable-text">
+                  <view wx:if="{{ currentLang === 'zh' }}" style="font-size: {{scaledBodyFontSize}}px;">
+                    {{contentItem.content[0]}}<text class="text_link elderly-touch-target" bind:tap="handleLinkTap" data-link-type="{{contentItem.linkType || 'default'}}">{{contentItem.content[1]}}</text>{{contentItem.content[2]}}
                   </view>
-                  <view wx:else>
-                    {{contentItem.content_en[0]}}<text class="text_link" bind:tap="handleLinkTap" data-link-type="{{contentItem.linkType || 'default'}}">{{contentItem.content_en[1]}}</text>{{contentItem.content_en[2]}}
+                  <view wx:else style="font-size: {{scaledBodyFontSize}}px;">
+                    {{contentItem.content_en[0]}}<text class="text_link elderly-touch-target" bind:tap="handleLinkTap" data-link-type="{{contentItem.linkType || 'default'}}">{{contentItem.content_en[1]}}</text>{{contentItem.content_en[2]}}
                   </view>
                 </view>
               </block>
@@ -106,21 +114,21 @@
             <!-- 兼容性处理：对于旧格式的内容（纯文本数组）使用默认渲染 -->
             <block wx:if="{{ section.content }}">
               <block wx:if="{{ currentLang === 'zh' }}">
-                <rich-text wx:for="{{ section.content }}" wx:key="index" nodes="<p style='line-height: 1.6;'>{{ item }}</p>" />
+                <rich-text wx:for="{{ section.content }}" wx:key="index" nodes="<p style='line-height: 1.6; font-size: {{scaledBodyFontSize}}px;'>{{ item }}</p>" />
               </block>
               <block wx:else>
-                <rich-text wx:for="{{ section.content_en }}" wx:key="index" nodes="<p style='line-height: 1.6;'>{{ item }}</p>" />
+                <rich-text wx:for="{{ section.content_en }}" wx:key="index" nodes="<p style='line-height: 1.6; font-size: {{scaledBodyFontSize}}px;'>{{ item }}</p>" />
               </block>
             </block>
           </block>
-        </view>
+        </scalable-card>
         <view class="seperator" />
       </view>
     </view>
   </view>
   
   <!-- 语言切换按钮 -->
-  <view class="language-toggle {{ isLandscape ? 'landscape' : '' }}" bindtap="toggleLanguage">
-    <text>{{ currentLang === 'zh' ? 'EN' : '中' }}</text>
+  <view class="language-toggle {{ isLandscape ? 'landscape' : '' }} elderly-touch-target" bindtap="toggleLanguage">
+    <scalable-text font-size="{{28}}">{{ currentLang === 'zh' ? 'EN' : '中' }}</scalable-text>
   </view>
 </view>

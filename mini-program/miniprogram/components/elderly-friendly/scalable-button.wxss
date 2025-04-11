@@ -1,0 +1,54 @@
+/* 适老化按钮组件样式 */
+.elderly-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  padding: 0 30rpx;
+  margin: 0;
+  line-height: 1.6;
+  /* 确保最小点击区域 */
+  min-width: 80rpx;
+  min-height: 80rpx;
+}
+
+/* 按钮类型定义 */
+.elderly-button.default {
+  background-color: #F8F8F8;
+  color: #000000;
+  border: 2rpx solid #DFDFDF;
+}
+
+.elderly-button.primary {
+  background-color: #07C160;
+  color: white;
+  border: 2rpx solid #07C160;
+}
+
+.elderly-button.warn {
+  background-color: #ff4949;
+  color: white;
+  border: 2rpx solid #ff4949;
+}
+
+/* 鼠标按下效果 */
+.elderly-button-hover {
+  opacity: 0.8;
+}
+
+/* 禁用效果 */
+.elderly-button.disabled {
+  opacity: 0.5;
+}
+
+/* 关怀模式额外对比度增强 */
+.elderly-button.primary.elderly-care-mode {
+  background-color: #06B04F; /* 更深的绿色，增强对比度 */
+  border: 2rpx solid #06B04F;
+}
+
+.elderly-button.default.elderly-care-mode {
+  color: #333333; /* 更深的文字颜色，增强对比度 */
+}

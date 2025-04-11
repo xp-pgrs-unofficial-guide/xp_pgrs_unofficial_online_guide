@@ -1,0 +1,10 @@
+<!-- 适老化按钮组件，可根据系统字体大小自动调整 -->
+<view 
+  class="elderly-button {{type}} {{disabled ? 'disabled' : ''}} {{className}}" 
+  style="width: {{scaledWidth}}rpx; height: {{scaledHeight}}rpx; font-size: {{scaledFontSize}}rpx; {{customStyle}}"
+  hover-class="{{disabled ? '' : 'elderly-button-hover'}}"
+  hover-start-time="20"
+  hover-stay-time="70"
+  bindtap="onButtonTap">
+  <slot></slot>
+</view>

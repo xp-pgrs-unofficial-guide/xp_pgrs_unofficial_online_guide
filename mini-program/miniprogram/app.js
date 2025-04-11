@@ -4,7 +4,10 @@ App({
   globalData: {
     envId: "cloud1-6gkazfbf5b6e6956",
     // 云文件 URL 缓存过期时间（毫秒）
-    imageUrlCacheExpireTime: 1000 * 60 * 60 * 2 // 默认2小时
+    imageUrlCacheExpireTime: 1000 * 60 * 60 * 2, // 默认2小时
+    fontSizeSetting: 16, // 默认字体大小
+    fontScaleFactor: 1, // 默认缩放系数
+    isElderlyMode: false, // 是否为关怀模式
   },
 
   onLaunch: function () {
@@ -21,8 +24,41 @@ App({
       });
     }
     
+    // 获取系统信息和用户字体大小设置
+    this.getSystemInfo();
+    
     // 清理过期的图片URL缓存
     this.cleanExpiredImageCache();
+  },
+  
+  /**
+   * 获取系统信息和用户字体大小设置
+   */
+  getSystemInfo: function() {
+    try {
+      const systemInfo = wx.getSystemInfoSync();
+      // 获取用户字体大小设置
+      this.globalData.fontSizeSetting = systemInfo.fontSizeSetting || 16;
+      
+      // 计算缩放系数
+      // 根据微信文档，当字号为23.8px时，为"关怀模式"，缩放倍率为1.4
+      if (this.globalData.fontSizeSetting >= 23) {
+        this.globalData.fontScaleFactor = 1.4;
+        this.globalData.isElderlyMode = true;
+      } else if (this.globalData.fontSizeSetting >= 20) {
+        this.globalData.fontScaleFactor = 1.25;
+      } else if (this.globalData.fontSizeSetting >= 18) {
+        this.globalData.fontScaleFactor = 1.12;
+      } else {
+        this.globalData.fontScaleFactor = 1;
+      }
+      
+      console.log('系统字体大小:', this.globalData.fontSizeSetting);
+      console.log('缩放系数:', this.globalData.fontScaleFactor);
+      console.log('是否关怀模式:', this.globalData.isElderlyMode);
+    } catch (e) {
+      console.error('获取系统信息失败', e);
+    }
   },
   
   /**

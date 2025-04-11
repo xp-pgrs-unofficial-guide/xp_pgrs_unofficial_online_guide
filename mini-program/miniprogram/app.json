@@ -35,5 +35,10 @@
       }
     ]
   },
+  "usingComponents": {
+    "scalable-text": "/components/elderly-friendly/scalable-text",
+    "scalable-button": "/components/elderly-friendly/scalable-button",
+    "scalable-card": "/components/elderly-friendly/scalable-card"
+  },
   "resizable": true
 }

@@ -32,6 +32,54 @@ page {
   --subtitle-font-size: 36rpx;
 }
 
+/* 适老化模式下的字体大小调整 */
+.elderly-care-mode {
+  --normal-font-size: 36rpx;
+  --title-font-size: 44rpx;
+  --subtitle-font-size: 40rpx;
+  --small-spacing: 15rpx;
+  --medium-spacing: 25rpx;
+  --large-spacing: 35rpx;
+}
+
+/* 适老化模式下的高对比度颜色调整 */
+.elderly-care-mode .font_title_2,
+.elderly-care-mode .font_title_3,
+.elderly-care-mode .section_title {
+  color: #000000;
+  font-weight: bold;
+}
+
+.elderly-care-mode .text_zone {
+  color: #000000;
+  line-height: 1.8;
+}
+
+.elderly-care-mode .primary-nav-item {
+  font-weight: 500;
+}
+
+.elderly-care-mode .primary-nav-item.active {
+  color: #003399; /* 更深的蓝色提高对比度 */
+  font-weight: bold;
+}
+
+.elderly-care-mode .secondary-nav-item.active {
+  background-color: #003399; /* 更深的蓝色提高对比度 */
+}
+
+.elderly-care-mode .text_link {
+  color: #003399; /* 更深的蓝色提高对比度 */
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.elderly-care-mode .language-toggle {
+  width: 100rpx; /* 更大的尺寸 */
+  height: 100rpx; /* 更大的尺寸 */
+  background-color: #003399; /* 更深的蓝色提高对比度 */
+}
+
 .container {
   position: relative;
   width: 100%;
@@ -41,6 +89,11 @@ page {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* 适老化模式下增加容器内边距，提高可读性 */
+.elderly-care-mode.container {
+  padding: 0 20rpx 120rpx 20rpx;
 }
 
 .main {
@@ -109,6 +162,13 @@ page {
   position: relative;
   transition: all 0.2s ease;
   text-align: center;
+}
+
+/* 适老化模式下增大导航项的点击区域 */
+.elderly-care-mode .primary-nav-item {
+  min-height: 80rpx;
+  min-width: 120rpx;
+  padding: 12rpx 36rpx;
 }
 
 .screen-large .primary-nav-item {
@@ -180,6 +240,14 @@ page {
   transition: all 0.3s ease;
 }
 
+/* 适老化模式下增大二级导航的点击区域 */
+.elderly-care-mode .secondary-nav-item {
+  min-height: 70rpx;
+  min-width: 100rpx;
+  padding: 8rpx 24rpx;
+  margin: 0 15rpx;
+}
+
 .screen-large .secondary-nav-item {
   padding: 8rpx 24rpx;
 }
@@ -238,6 +306,12 @@ page {
   font-size: var(--normal-font-size);
 }
 
+/* 适老化模式下增加文本行间距，提高可读性 */
+.elderly-care-mode .text_zone {
+  line-height: 2.0;
+  letter-spacing: 1px;
+}
+
 .screen-large .text_zone {
   line-height: 1.8;
 }
@@ -253,10 +327,22 @@ page {
   font-size: calc(var(--normal-font-size) - 2rpx);
 }
 
+/* 适老化模式下增强代码块的对比度 */
+.elderly-care-mode .code_zone {
+  background-color: #000000;
+  color: #FFFFFF;
+  padding: 10rpx 40rpx;
+}
+
 .image_zone {
   position: relative;
   width: 100%;
   margin: 20rpx 0;
+}
+
+/* 适老化模式下增大图片区域的边距 */
+.elderly-care-mode .image_zone {
+  margin: 30rpx 0;
 }
 
 .image_zone image {
@@ -277,8 +363,23 @@ page {
   border-radius: 10rpx;
 }
 
+/* 适老化模式下增大提示文字的可读性 */
+.elderly-care-mode .image-loading,
+.elderly-care-mode .image-error {
+  font-size: 28rpx;
+  padding: 15rpx 30rpx;
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 .image-error {
   color: #ff4d4f;
+}
+
+/* 适老化模式下的错误提示增强 */
+.elderly-care-mode .image-error {
+  color: #cc0000;
+  font-weight: bold;
 }
 
 /* 横屏模式下的图片样式 */
@@ -375,6 +476,16 @@ page {
   border-radius: 12rpx;
 }
 
+/* 适老化模式下增大复制按钮的点击区域 */
+.elderly-care-mode .btn-copy {
+  width: 50rpx;
+  height: 50rpx;
+  top: 15rpx;
+  right: 15rpx;
+  background-color: rgba(255, 255, 255, 0.2); /* 增加背景以提高可见性 */
+  padding: 8rpx;
+}
+
 /* 语言切换按钮 */
 .language-toggle {
   position: fixed;
@@ -391,6 +502,15 @@ page {
   font-size: var(--normal-font-size);
   box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.2);
   z-index: 100;
+}
+
+/* 适老化模式下增大语言切换按钮尺寸 */
+.elderly-care-mode .language-toggle {
+  width: 100rpx;
+  height: 100rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.3);
 }
 
 /* 横屏模式下的语言切换按钮位置调整 */
@@ -414,6 +534,11 @@ page {
   .container.landscape-mode {
     flex-direction: row;
     align-items: flex-start;
+  }
+  
+  /* 适老化模式下增大导航面板尺寸 */
+  .elderly-care-mode.landscape-mode .folding-nav {
+    width: 300rpx;
   }
   
   .landscape-mode .folding-nav {
@@ -442,12 +567,22 @@ page {
     border-bottom: 1rpx solid rgba(0, 0, 0, 0.05);
   }
   
+  /* 适老化模式下增大导航项的留白 */
+  .elderly-care-mode.landscape-mode .primary-nav-item {
+    padding: 30rpx 40rpx;
+  }
+  
   .landscape-mode .primary-nav-item .indicator {
     left: 10rpx;
     bottom: auto;
     width: 4rpx;
     height: 40rpx;
     transform: none;
+  }
+  
+  /* 适老化模式下为导航添加更明显的激活状态 */
+  .elderly-care-mode.landscape-mode .primary-nav-item.active {
+    background-color: rgba(0, 51, 153, 0.1);
   }
   
   .landscape-mode .secondary-nav.visible {
@@ -470,6 +605,12 @@ page {
   .landscape-mode .content-area {
     margin-left: 260rpx;
     width: calc(100% - 280rpx);
+  }
+  
+  /* 适老化模式下调整内容区域边距 */
+  .elderly-care-mode.landscape-mode .content-area {
+    margin-left: 320rpx;
+    width: calc(100% - 340rpx);
   }
   
   /* 网格布局 - 适用于章节内容在大屏的展示 */

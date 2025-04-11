@@ -1,0 +1,4 @@
+<!-- 适老化卡片组件，可根据系统字体大小自动调整内部间距 -->
+<view class="elderly-card {{className}}" style="padding: {{scaledPadding}}rpx; {{customStyle}}">
+  <slot></slot>
+</view>

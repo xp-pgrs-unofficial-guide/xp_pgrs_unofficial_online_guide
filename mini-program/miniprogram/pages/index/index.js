@@ -1,5 +1,6 @@
 const { NavigationData } = require("./constants");
 const app = getApp(); // 添加 app 实例以访问云文件 ID 辅助方法
+const accessibility = require("../../utils/accessibility"); // 引入适老化工具
 
 Page({
   /**
@@ -30,6 +31,12 @@ Page({
     fontSize: 'normal', // 字体大小：small, normal, large
     screenSizeClass: '', // screen-small, screen-normal, screen-large
     isPC: false, // 是否为PC端
+    
+    // 适老化相关
+    scaledFontSize: 30, // 导航栏字体大小的缩放值，默认30rpx
+    scaledBodyFontSize: 16, // 正文字体大小的缩放值，默认16px
+    scaledCodeFontSize: 14, // 代码块字体大小的缩放值，默认14px
+    isElderlyMode: false, // 是否为关怀模式
   },
 
   /**
@@ -55,6 +62,37 @@ Page({
     
     // 加载初始章节的云存储图片
     this.loadCurrentChapterImages();
+    
+    // 适老化设置
+    this.applyAccessibilitySettings();
+  },
+  
+  /**
+   * 应用适老化设置
+   */
+  applyAccessibilitySettings: function() {
+    // 获取应用全局的字体缩放系数
+    const accessibilityInfo = accessibility.getAccessibilityInfo();
+    
+    // 计算缩放后的字体大小
+    const scaledNavFontSize = accessibility.scaleFontSize(30); // 导航栏字体
+    const scaledBodyFontSize = Math.round(16 * accessibilityInfo.fontScaleFactor); // 正文字体(px)
+    const scaledCodeFontSize = Math.round(14 * accessibilityInfo.fontScaleFactor); // 代码字体(px)
+    
+    this.setData({
+      scaledFontSize: scaledNavFontSize,
+      scaledBodyFontSize: scaledBodyFontSize,
+      scaledCodeFontSize: scaledCodeFontSize,
+      isElderlyMode: accessibilityInfo.isElderlyMode
+    });
+    
+    console.log('应用适老化设置', {
+      fontScaleFactor: accessibilityInfo.fontScaleFactor,
+      scaledNavFontSize,
+      scaledBodyFontSize,
+      scaledCodeFontSize,
+      isElderlyMode: accessibilityInfo.isElderlyMode
+    });
   },
   
   /**
