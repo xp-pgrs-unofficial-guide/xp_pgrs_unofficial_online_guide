@@ -9,9 +9,7 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "西浦博士生非官方手册",
-    "navigationBarTextStyle": "black",
-    "initialRenderWidth": 375,
-    "initialRenderHeight": 667
+    "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",
