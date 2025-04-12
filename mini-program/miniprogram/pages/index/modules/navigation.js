@@ -69,7 +69,10 @@ const navigation = {
    * 设置章节观察器
    */
   setupChapterObserver(chapter, observerMap) {
-    const observer = wx.createIntersectionObserver()
+    const observer = wx.createIntersectionObserver({
+      observeAll: false,
+      nativeMode: true
+    })
       .relativeToViewport({top: -100, bottom: -100})
       .observe(`#step_${chapter.id}`, (res) => {
         if (res.intersectionRatio > 0) {
@@ -99,7 +102,10 @@ const navigation = {
    */
   setupSectionObservers(chapter, observerMap) {
     chapter.sections.forEach(section => {
-      const sectionObserver = wx.createIntersectionObserver()
+      const sectionObserver = wx.createIntersectionObserver({
+        observeAll: false,
+        nativeMode: true
+      })
         .relativeToViewport({top: -120, bottom: -150})
         .observe(`#section_${section.id}`, (res) => {
           if (res.intersectionRatio > 0) {
