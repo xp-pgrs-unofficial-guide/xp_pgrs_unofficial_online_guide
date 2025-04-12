@@ -48,21 +48,20 @@ const accessibilityManager = {
    */
   getSystemFontSize() {
     try {
-      wx.getSystemInfoAsync({
-        success: (res) => {
-          // 微信提供fontSizeSetting，表示用户设置的字体大小
-          const fontSizeSetting = res.fontSizeSetting || 16;
-          let fontSize = 'normal';
-          
-          if (fontSizeSetting <= 15) {
-            fontSize = 'small';
-          } else if (fontSizeSetting >= 18) {
-            fontSize = 'large';
-          }
-          
-          this.setData({ fontSize });
-        }
-      });
+      // 使用新的API替代废弃的wx.getSystemInfoAsync
+      const appBaseInfo = wx.getAppBaseInfo();
+      
+      // 微信提供fontSizeSetting，表示用户设置的字体大小
+      const fontSizeSetting = appBaseInfo.fontSizeSetting || 16;
+      let fontSize = 'normal';
+      
+      if (fontSizeSetting <= 15) {
+        fontSize = 'small';
+      } else if (fontSizeSetting >= 18) {
+        fontSize = 'large';
+      }
+      
+      this.setData({ fontSize });
     } catch (e) {
       console.error('获取系统字体大小失败', e);
     }

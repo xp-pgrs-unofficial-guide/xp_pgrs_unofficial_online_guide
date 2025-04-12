@@ -7,6 +7,7 @@
       <scroll-view 
         scroll-x="{{ !isLandscape }}" 
         scroll-y="{{ isLandscape }}"
+        enable-flex="true"
         class="primary-nav {{ isLandscape ? 'primary-nav-landscape' : '' }}"
         scroll-into-view="{{primaryNavScrollId}}"
         scroll-with-animation="true"
@@ -30,6 +31,7 @@
         <scroll-view 
           scroll-x="{{ !isLandscape }}" 
           scroll-y="{{ isLandscape }}"
+          enable-flex="true"
           class="secondary-nav-scroll {{ isLandscape ? 'secondary-nav-landscape' : '' }}"
           scroll-into-view="{{secondaryNavScrollId}}"
           scroll-with-animation="true"

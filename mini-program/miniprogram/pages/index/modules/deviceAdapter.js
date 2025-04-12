@@ -19,8 +19,13 @@ const deviceAdapter = {
    */
   detectDeviceInfo() {
     try {
-      const systemInfo = wx.getSystemInfoSync();
-      const { windowWidth, windowHeight, pixelRatio, platform } = systemInfo;
+      // 使用新的API代替已弃用的wx.getSystemInfoSync
+      const windowInfo = wx.getWindowInfo();
+      const deviceInfo = wx.getDeviceInfo();
+      const appBaseInfo = wx.getAppBaseInfo();
+      
+      const { windowWidth, windowHeight, pixelRatio } = windowInfo;
+      const { platform } = appBaseInfo;
       const isLandscape = windowWidth > windowHeight;
       
       // 根据屏幕宽度确定尺寸类别

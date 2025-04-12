@@ -50,9 +50,10 @@ App({
    */
   getSystemInfo: function() {
     try {
-      const systemInfo = wx.getSystemInfoSync();
+      // 替换已弃用的 wx.getSystemInfoSync() 为推荐的 API
+      const appBaseInfo = wx.getAppBaseInfo();
       // 获取用户字体大小设置
-      this.globalData.fontSizeSetting = systemInfo.fontSizeSetting || 16;
+      this.globalData.fontSizeSetting = appBaseInfo.fontSizeSetting || 16;
       
       // 使用辅助功能工具更新适老化设置
       const { fontScaleFactor, isElderlyMode } = accessibility.updateAccessibilitySettings(
